@@ -1,0 +1,38 @@
+{
+  "name": "pwa-ybstory",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "async-boot": "^1.1.9",
+    "axios": "^0.17.1",
+    "delegates": "^1.0.0",
+    "format-duration": "^1.0.0",
+    "register-service-worker": "^1.0.0",
+    "shortid": "^2.2.12",
+    "swiper": "^4.3.3",
+    "vant": "^1.1.13",
+    "vue": "^2.5.16",
+    "vue-awesome-swiper": "^3.1.3",
+    "vue-router": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.0-rc.4",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.4",
+    "@vue/cli-plugin-pwa": "^3.0.0-rc.4",
+    "@vue/cli-service": "^3.0.0-rc.4",
+    "@vue/eslint-config-standard": "^3.0.0-rc.4",
+    "less": "^3.7.1",
+    "less-loader": "^4.1.0",
+    "vue-template-compiler": "^2.5.16"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
