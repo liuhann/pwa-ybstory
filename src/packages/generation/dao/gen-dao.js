@@ -7,4 +7,10 @@ export default class GenDAO {
     const result = await this.ctx.client.get('/story/samples')
     return result.data
   }
+
+  async markStory (story, mark) {
+	  const result = await this.ctx.client.get('/story/view/' + story._id + '/' + mark)
+	  return result.data
+  }
+
 }

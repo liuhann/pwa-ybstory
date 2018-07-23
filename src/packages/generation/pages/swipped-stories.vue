@@ -66,6 +66,7 @@ export default {
       if (this.currentIndex + 10 > this.stories.length) {
         this.fetchMore()
       }
+      this.ctx.gendao.markSwippedTo(this.stories[this.currentIndex])
     },
     async fetchMore () {
       let more = await this.ctx.gendao.someMoreStories()
