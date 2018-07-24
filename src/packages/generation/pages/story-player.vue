@@ -153,6 +153,12 @@ export default {
             font-size: 4vw;
         }
     }
+
+    .control {
+        display: flex;
+        flex: 1;
+    }
+
     .van-icon-play, .van-icon-pause {
         flex: 1;
         text-align: center;

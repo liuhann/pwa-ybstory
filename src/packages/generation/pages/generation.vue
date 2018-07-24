@@ -4,8 +4,9 @@
             <van-icon name="search"></van-icon>
             <van-icon name="like-o"><span>112</span></van-icon>
             <van-icon name="completed"></van-icon>
+            <van-icon name="edit" @click="editCurrentStory"></van-icon>
         </div>
-        <swipped-stories @choose-story="chooseStory"></swipped-stories>
+        <swipped-stories @choose-story="chooseStory" @swipped-to="swippedToStory"></swipped-stories>
         <story-player :story="story"></story-player>
     </div>
 </template>
@@ -26,7 +27,8 @@ export default {
   },
   data () {
     return {
-      story: null
+      story: null,
+      swippedStory: null
     }
   },
   created () {
@@ -35,6 +37,13 @@ export default {
   methods: {
     chooseStory (story) {
       this.story = story
+    },
+	  swippedToStory (story) {
+    	this.swippedStory = story
+    },
+
+	  editCurrentStory () {
+      this.$router.push('/system/modify/' + this.swippedStory._id)
     }
   }
 }
@@ -70,6 +79,9 @@ export default {
     }
     .van-icon-like-o {
         top: 45%;
+    }
+    .van-icon-edit {
+        top: 75%
     }
 }
 </style>
