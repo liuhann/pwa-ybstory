@@ -1,9 +1,10 @@
 <template>
     <div class="root">
-        <van-icon name="search"></van-icon>
-        <van-icon name="like-o"><span>112</span></van-icon>
-        <van-icon name="share"></van-icon>
-        <van-icon name="chat"></van-icon>
+        <div class="root-icons">
+            <van-icon name="search"></van-icon>
+            <van-icon name="like-o"><span>112</span></van-icon>
+            <van-icon name="completed"></van-icon>
+        </div>
         <swipped-stories @choose-story="chooseStory"></swipped-stories>
         <story-player :story="story"></story-player>
     </div>
@@ -46,7 +47,7 @@ export default {
     top: 0;
     width: 100vw;
     height: 100vh;
-    .van-icon {
+    .root-icons .van-icon {
         color: rgba(255,255,255,.85);
         position: absolute;
         right: 4vw;
@@ -64,7 +65,7 @@ export default {
     .van-icon-share {
         top: 65%;
     }
-    .van-icon-chat {
+    .van-icon-completed {
         top: 55%;
     }
     .van-icon-like-o {
