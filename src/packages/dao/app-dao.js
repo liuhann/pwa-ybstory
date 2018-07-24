@@ -10,7 +10,7 @@ class AppDao {
   }
   
   async removeStoryById (id) {
-  
+    const result = await this.ctx.client.get(`/story/delete/` + id)
   }
   
   async updateStory (story) {
