@@ -3,6 +3,19 @@ class AppDao {
   constructor (ctx) {
     this.ctx = ctx
   }
+  
+  async getStoryById (id) {
+    const result = await this.ctx.client.get(`/story/detail/` + id)
+    return result.data
+  }
+  
+  async removeStoryById (id) {
+    const result = await this.ctx.client.get(`/story/delete/` + id)
+  }
+  
+  async updateStory (story) {
+    await this.ctx.client.post('/story/detail/update',  story)
+  }
 
   async listHome () {
     const result = await this.ctx.client.get(`/home?labels=今日推荐,凯迪克大奖,睡前故事,绘本故事`)

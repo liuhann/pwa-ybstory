@@ -6,7 +6,7 @@
             <div class="slider">
                 <div class="title" v-if="loading">正在加载{{story.title}}</div>
                 <div class="title" v-else>正在播放{{story.title}}</div>
-                <vue-slider v-model="percent" bar-height="5px"></vue-slider>
+                <vue-slider v-model="percent" bar-height="5px" @change="onChange"></vue-slider>
                 <div class="dura">{{formatDura(timestamp)}}/{{formatDura(story)}}</div>
             </div>
             <div class="control" @click="togglePlay">
@@ -95,6 +95,10 @@ export default {
       return `${this.imageHost}/story/cover/480/480/${cover}.png`
     },
 
+    onChange (value) {
+        this.audio.currentTime = Math.floor(this.story.duration * value / 100)
+    },
+
     togglePlay () {
       this.playing = !this.playing
       if (this.playing) {
@@ -103,6 +107,9 @@ export default {
         this.audio.pause()
       }
     },
+
+
+
     timeUpdate: function (event) {
       this.timestamp = Math.floor(event.target.currentTime)
       this.percent = Math.floor(100 * this.timestamp / parseInt(this.story.duration))
@@ -146,6 +153,12 @@ export default {
             font-size: 4vw;
         }
     }
+
+    .control {
+        display: flex;
+        flex: 1;
+    }
+
     .van-icon-play, .van-icon-pause {
         flex: 1;
         text-align: center;

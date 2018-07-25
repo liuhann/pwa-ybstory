@@ -1,10 +1,12 @@
 <template>
     <div class="root">
-        <van-icon name="search"></van-icon>
-        <van-icon name="like-o"><span>112</span></van-icon>
-        <van-icon name="share"></van-icon>
-        <van-icon name="chat"></van-icon>
-        <swipped-stories @choose-story="chooseStory"></swipped-stories>
+        <div class="root-icons">
+            <van-icon name="search"></van-icon>
+            <van-icon name="like-o"><span>112</span></van-icon>
+            <van-icon name="completed"></van-icon>
+            <van-icon name="edit" @click="editCurrentStory"></van-icon>
+        </div>
+        <swipped-stories @choose-story="chooseStory" @swipped-to="swippedToStory"></swipped-stories>
         <story-player :story="story"></story-player>
     </div>
 </template>
@@ -25,7 +27,8 @@ export default {
   },
   data () {
     return {
-      story: null
+      story: null,
+      swippedStory: null
     }
   },
   created () {
@@ -34,6 +37,13 @@ export default {
   methods: {
     chooseStory (story) {
       this.story = story
+    },
+	  swippedToStory (story) {
+    	this.swippedStory = story
+    },
+
+	  editCurrentStory () {
+      this.$router.push('/system/modify/' + this.swippedStory._id)
     }
   }
 }
@@ -46,7 +56,7 @@ export default {
     top: 0;
     width: 100vw;
     height: 100vh;
-    .van-icon {
+    .root-icons .van-icon {
         color: rgba(255,255,255,.85);
         position: absolute;
         right: 4vw;
@@ -64,11 +74,14 @@ export default {
     .van-icon-share {
         top: 65%;
     }
-    .van-icon-chat {
+    .van-icon-completed {
         top: 55%;
     }
     .van-icon-like-o {
         top: 45%;
+    }
+    .van-icon-edit {
+        top: 75%
     }
 }
 </style>
