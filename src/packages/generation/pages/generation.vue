@@ -6,8 +6,8 @@
         </van-tabs>
         <div class="root-icons">
             <van-icon name="search"></van-icon>
-            <van-icon name="like-o"><span>112</span></van-icon>
-            <van-icon name="completed"></van-icon>
+            <van-icon name="like-o" @click="likeCurrentStory"><span>{{likeCount}}</span></van-icon>
+            <van-icon name="info-o"><span>{{listenCount}}</span></van-icon>
             <van-icon name="edit" @click="editCurrentStory"></van-icon>
         </div>
         <swipped-stories :filter="filter" @choose-story="chooseStory" @swipped-to="swippedToStory"></swipped-stories>
@@ -36,7 +36,7 @@ export default {
   },
   data () {
     return {
-      mainCategories: ['首页', '睡前故事', '绘本', '有趣'],
+      mainCategories: ['首页', '睡前故事', '绘本'],
       story: null,
       active: '首页',
       swippedStory: null
@@ -50,23 +50,42 @@ export default {
         filter.type = this.active
       }
       return filter
+    },
+    likeCount () {
+      if (this.swippedStory && this.swippedStory.like) {
+        return this.swippedStory.like
+      } else {
+        return ''
+      }
+    },
+    listenCount () {
+      if (this.swippedStory && this.swippedStory.listened) {
+        return this.swippedStory.listened
+      } else {
+        return ''
+      }
     }
   },
 
   created () {
     this.ctx.gendao = new GenDAO(this.ctx)
   },
+
   methods: {
     chooseStory (story) {
       this.story = story
+      this.ctx.gendao.markStory(this.story, 'listened')
     },
     swippedToStory (story) {
-      this.ctx.gendao.markSwippedTo(story)
       this.swippedStory = story
     },
-
     editCurrentStory () {
       this.$router.push('/system/modify/' + this.swippedStory._id)
+    },
+    likeCurrentStory () {
+      if (this.swippedStory) {
+        this.ctx.gendao.markStory(this.story, 'like')
+      }
     }
   }
 }
@@ -107,10 +126,7 @@ export default {
     .van-icon-search {
         top: 4vw;
     }
-    .van-icon-share {
-        top: 65%;
-    }
-    .van-icon-completed {
+    .van-icon-info-o {
         top: 55%;
     }
     .van-icon-like-o {
