@@ -30,6 +30,9 @@ export default {
     swiperSlide
   },
   props: {
+    filter: {
+      type: Object
+    }
   },
   data () {
     return {

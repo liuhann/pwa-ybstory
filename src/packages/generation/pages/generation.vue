@@ -1,6 +1,6 @@
 <template>
     <div class="root">
-        <van-tabs v-model="active">
+        <van-tabs v-model="active" class="root-tabs">
             <van-tab v-for="category in mainCategories" :title="category" :key="category">
             </van-tab>
         </van-tabs>
@@ -10,7 +10,7 @@
             <van-icon name="completed"></van-icon>
             <van-icon name="edit" @click="editCurrentStory"></van-icon>
         </div>
-        <swipped-stories @choose-story="chooseStory" @swipped-to="swippedToStory"></swipped-stories>
+        <swipped-stories :filter="filter" @choose-story="chooseStory" @swipped-to="swippedToStory"></swipped-stories>
         <story-player :story="story"></story-player>
     </div>
 </template>
@@ -23,6 +23,7 @@ import StoryPlayer from './story-player'
 import GenDAO from '../dao/gen-dao'
 import Icon from 'vant/lib/icon'
 import 'vant/lib/vant-css/icon.css'
+import 'vant/lib/vant-css/tab.css'
 
 export default {
   name: 'generation',
@@ -41,6 +42,17 @@ export default {
       swippedStory: null
     }
   },
+
+  computed: {
+    filter () {
+      const filter = {}
+      if (this.active !== '首页') {
+        filter.type = this.active
+      }
+      return filter
+    }
+  },
+
   created () {
     this.ctx.gendao = new GenDAO(this.ctx)
   },
@@ -67,6 +79,19 @@ export default {
     top: 0;
     width: 100vw;
     height: 100vh;
+    .root-tabs {
+        position: absolute;
+        left: 12vw;
+        top: 2vw;
+        right: 12vw;
+        z-index: 101;
+        .van-tabs__wrap:after {
+            border: none;
+        }
+        .van-tab, .van-tabs, .van-tabs__nav {
+            background-color: transparent;
+        }
+    }
     .root-icons .van-icon {
         color: rgba(255,255,255,.85);
         position: absolute;
