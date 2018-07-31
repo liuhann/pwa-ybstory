@@ -38,7 +38,7 @@ export default {
   components: {
     'vue-slider': Slider,
     'van-loading': Loading,
-	  'van-icon': Icon
+    'van-icon': Icon
   },
   mixins: [
     storyMixins

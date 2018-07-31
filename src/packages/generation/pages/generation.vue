@@ -1,5 +1,9 @@
 <template>
     <div class="root">
+        <van-tabs v-model="active">
+            <van-tab v-for="category in mainCategories" :title="category" :key="category">
+            </van-tab>
+        </van-tabs>
         <div class="root-icons">
             <van-icon name="search"></van-icon>
             <van-icon name="like-o"><span>112</span></van-icon>
@@ -13,6 +17,8 @@
 
 <script>
 import SwippedStories from './swipped-stories'
+import Tab from 'vant/lib/tab'
+import Tabs from 'vant/lib/tabs'
 import StoryPlayer from './story-player'
 import GenDAO from '../dao/gen-dao'
 import Icon from 'vant/lib/icon'
@@ -23,11 +29,15 @@ export default {
   components: {
     SwippedStories,
     StoryPlayer,
-    'van-icon': Icon
+    'van-icon': Icon,
+    'van-tabs': Tabs,
+    'van-tab': Tab
   },
   data () {
     return {
+      mainCategories: ['首页', '睡前故事', '绘本', '有趣'],
       story: null,
+      active: '首页',
       swippedStory: null
     }
   },
@@ -38,11 +48,12 @@ export default {
     chooseStory (story) {
       this.story = story
     },
-	  swippedToStory (story) {
-    	this.swippedStory = story
+    swippedToStory (story) {
+      this.ctx.gendao.markSwippedTo(story)
+      this.swippedStory = story
     },
 
-	  editCurrentStory () {
+    editCurrentStory () {
       this.$router.push('/system/modify/' + this.swippedStory._id)
     }
   }

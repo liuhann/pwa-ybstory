@@ -27,8 +27,8 @@ const storyMixins = {
         const number = parseInt(story.duration)
         return Math.floor(number / 60) + ':' + (100 + number % 60).toString().substring(1)
       } else {
-	      const number = parseInt(story)
-	      return Math.floor(number / 60) + ':' + (100 + number % 60).toString().substring(1)
+        const number = parseInt(story)
+        return Math.floor(number / 60) + ':' + (100 + number % 60).toString().substring(1)
       }
     },
 

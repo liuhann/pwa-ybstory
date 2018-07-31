@@ -66,18 +66,17 @@ export default {
       if (this.currentIndex + 10 > this.stories.length) {
         this.fetchMore()
       }
-      this.ctx.gendao.markSwippedTo(this.stories[this.currentIndex])
       this.$emit('swipped-to', this.stories[this.currentIndex])
     },
     async fetchMore () {
       let more = await this.ctx.gendao.someMoreStories()
       if (this.stories.length === 0) {
-      	this.$emit('swipped-to', more[0])
+        this.$emit('swipped-to', more[0])
       }
       this.stories = [...this.stories, ...more]
     },
     chooseStory (story) {
-    	this.$emit('choose-story', story)
+      this.$emit('choose-story', story)
     }
   }
 }
