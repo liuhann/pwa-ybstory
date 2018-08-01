@@ -62,7 +62,6 @@ export default {
     },
     storyUrl () {
       if (this.story) {
-        this.loading = true
         return this.ctx.bootOpts.servers.file.baseURL + '/story/mp3/' + this.story._id
       } else {
         return null
@@ -96,7 +95,7 @@ export default {
     },
 
     onChange (value) {
-        this.audio.currentTime = Math.floor(this.story.duration * value / 100)
+      this.audio.currentTime = Math.floor(this.story.duration * value / 100)
     },
 
     togglePlay () {
@@ -107,8 +106,6 @@ export default {
         this.audio.pause()
       }
     },
-
-
 
     timeUpdate: function (event) {
       this.timestamp = Math.floor(event.target.currentTime)

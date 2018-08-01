@@ -5,10 +5,10 @@
             </van-tab>
         </van-tabs>
         <div class="root-icons">
-            <van-icon name="search"></van-icon>
-            <van-icon name="like-o" @click="likeCurrentStory"><span>{{likeCount}}</span></van-icon>
+            <van-icon name="search" @click="goSearch"></van-icon>
+            <!--<van-icon name="like-o" @click="likeCurrentStory"><span>{{likeCount}}</span></van-icon>-->
             <van-icon name="info-o"><span>{{listenCount}}</span></van-icon>
-            <van-icon name="edit" @click="editCurrentStory"></van-icon>
+            <!--<van-icon name="edit" @click="editCurrentStory"></van-icon>-->
         </div>
         <swipped-stories :filter="filter" @choose-story="chooseStory" @swipped-to="swippedToStory"></swipped-stories>
         <story-player :story="story"></story-player>
@@ -20,7 +20,6 @@ import SwippedStories from './swipped-stories'
 import Tab from 'vant/lib/tab'
 import Tabs from 'vant/lib/tabs'
 import StoryPlayer from './story-player'
-import GenDAO from '../dao/gen-dao'
 import Icon from 'vant/lib/icon'
 import 'vant/lib/vant-css/icon.css'
 import 'vant/lib/vant-css/tab.css'
@@ -36,10 +35,18 @@ export default {
   },
   data () {
     return {
+      searchTitle: null,
+      storyId: null,
       mainCategories: ['首页', '睡前故事', '绘本'],
       story: null,
       active: '首页',
       swippedStory: null
+    }
+  },
+
+  watch: {
+    '$route': function (from, to) {
+      this.loadQueryFromRoute()
     }
   },
 
@@ -48,6 +55,9 @@ export default {
       const filter = {}
       if (this.active !== '首页') {
         filter.type = this.active
+      }
+      if (this.searchTitle) {
+        filter.title = this.searchTitle
       }
       return filter
     },
@@ -68,10 +78,14 @@ export default {
   },
 
   created () {
-    this.ctx.gendao = new GenDAO(this.ctx)
+    this.loadQueryFromRoute()
   },
 
   methods: {
+    loadQueryFromRoute () {
+      this.searchTitle = this.$route.query.title
+      this.storyId = this.$route.query.id
+    },
     chooseStory (story) {
       this.story = story
       this.ctx.gendao.markStory(this.story, 'listened')
@@ -86,6 +100,9 @@ export default {
       if (this.swippedStory) {
         this.ctx.gendao.markStory(this.story, 'like')
       }
+    },
+    goSearch () {
+      this.$router.push('/search')
     }
   }
 }

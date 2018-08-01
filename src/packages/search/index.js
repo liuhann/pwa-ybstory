@@ -1,4 +1,5 @@
 import StorySearch from './story-search'
+import SearchDAO from './search-dao'
 
 export default {
   routes: [{
@@ -6,6 +7,6 @@ export default {
     component: StorySearch
   }],
   async loaded (ctx) {
-
+    ctx.searchDao = new SearchDAO(ctx)
   }
 }
