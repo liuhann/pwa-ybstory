@@ -20,7 +20,7 @@ const boot = new AsyncBoot({
   ],
   started: async (ctx, next) => {
     if (!location.href.match('generation')) {
-      ctx._router.replace('/search')
+      ctx._router.replace('/generation')
     }
     await next()
   }

@@ -1,64 +1,82 @@
 <template>
   <div class="story-search">
-    搜索看看
-    <input v-model="value" type="search"> <button  @click="onSearch">搜</button>
-    <vant-search
-      v-model="value"
-      placeholder="请输入你想听的内容"
-      show-action
-      @search="onSearch">
-      <div slot="action" @click="onSearch">搜索</div>
-    </vant-search>
+    <div class="search-input">
+      <van-field
+        v-model="value"
+        center
+        clearable
+        placeholder="请输入想听的内容">
+        <van-button slot="button" size="small" type="primary" @click="onSearch">搜索</van-button>
+      </van-field>
+    </div>
     <div class="result-list">
-      <vant-list
-        v-model="loading"
-        :finished="finished"
-        @load="loadMore">
-        <div v-for="story in results" :key="story._id" @click="openStory(story)">
-          {{story.title}}
+        <div class="item" v-for="story in results" :key="story._id" @click="openStory(story)">
+          <div class="background" :style="{
+            backgroundImage: getStoryCoverBg(story.cover)
+          }"></div>
+          <div class="story-title">
+            {{story.title}}
+          </div>
+          <div class="short">
+            {{story.dura}}
+          </div>
         </div>
-      </vant-list>
     </div>
   </div>
 </template>
 
 <script>
-import Search from 'vant/lib/search'
-import List from 'vant/lib/list'
-import 'vant/lib/vant-css/search.css'
-import 'vant/lib/vant-css/list.css'
+import Field from 'vant/lib/field'
+import Button from 'vant/lib/button'
+import 'vant/lib/vant-css/field.css'
+import 'vant/lib/vant-css/button.css'
 
 export default {
   name: 'story-search',
   components: {
-    'vant-search': Search,
-    'vant-list': List
+    'van-field': Field,
+    'van-button': Button
   },
   data () {
     return {
       skip: 0,
-      limit: 20,
+      limit: 50,
       value: '',
       results: [],
       loading: false,
       finished: false
     }
   },
+  computed: {
+	  imageHost () {
+		  return this.ctx.bootOpts.servers.default.baseURL
+	  },
+	  imageStyle () {
+		  return {
+			  width: window.clientWidth - 20,
+			  height: window.clientWidth - 20
+		  }
+	  }
+  },
   created () {
-    alert('story search created')
   },
   methods: {
+	  getStoryCover (cover) {
+		  return `${this.imageHost}/story/cover/480/480/${cover}.png`
+	  },
+	  getStoryCoverBg (cover) {
+		  return "url('" + this.getStoryCover(cover) + "')"
+	  },
+
     async onSearch () {
       this.skip = 0
-      alert('on search')
+      this.results = []
       await this.loadMore()
     },
     async loadMore () {
       if (this.value) {
         this.loading = true
-        alert('load more  ' + this.value)
         const list = await this.ctx.searchDao.search(this.value, this.skip, this.limit)
-        alert(list.length)
         this.loading = false
         this.skip += this.limit
         this.results = [...this.results, ...list]
@@ -76,14 +94,49 @@ export default {
 
 <style lang="less">
 .story-search {
-  position: absolute;
+  position: relative;
   left: 0;
-  right: 0;
   top: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
   background: transparent;
+  .van-cell {
+    margin: 10px;
+    width: auto;
+  }
+  .search-input {
+  }
   .van-search {
     height: 56px;
+  }
+
+  .result-list {
+    .item {
+      float: left;
+      width: 50vw;
+      height: 50vw;
+      box-sizing: border-box;
+      position: relative;
+      .background {
+        width: 100%;
+        height: 100%;
+        background-size: contain;
+      }
+      .story-title {
+        position: absolute;
+        height: 20px;
+        background: rgb(65, 126, 196);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 14px;
+        padding: 5px 10px;
+        color: #efefef;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+      }
+    }
   }
 }
 </style>
