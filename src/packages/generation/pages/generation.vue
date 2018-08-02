@@ -1,9 +1,9 @@
 <template>
     <div class="root">
-        <van-tabs v-model="active" class="root-tabs">
+        <!--<van-tabs v-model="active" class="root-tabs">
             <van-tab v-for="category in mainCategories" :title="category" :key="category">
             </van-tab>
-        </van-tabs>
+        </van-tabs>-->
         <div class="root-icons">
             <van-icon name="search" @click="goSearch"></van-icon>
             <!--<van-icon name="like-o" @click="likeCurrentStory"><span>{{likeCount}}</span></van-icon>-->

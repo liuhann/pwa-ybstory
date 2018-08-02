@@ -6,7 +6,7 @@ export default {
     path: '/search',
     component: StorySearch
   }],
-  async loaded (ctx) {
+  async onload (ctx) {
     ctx.searchDao = new SearchDAO(ctx)
   }
 }

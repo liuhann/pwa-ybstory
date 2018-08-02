@@ -43,6 +43,9 @@ export default {
       finished: false
     }
   },
+  created () {
+  	debugger
+  },
   methods: {
     async onSearch () {
       this.skip = 0

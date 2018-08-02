@@ -8,6 +8,7 @@ import RouterView from './view'
 import dao from './packages/dao'
 import generation from './packages/generation'
 import modify from './packages/modify'
+import search from './packages/search'
 
 const boot = new AsyncBoot({
   vue: {
@@ -16,7 +17,7 @@ const boot = new AsyncBoot({
   },
   servers: config.servers,
   packages: [
-    dao, generation, modify
+    dao, generation, modify, search
   ],
   started: async (ctx, next) => {
     ctx._router.replace('/generation')

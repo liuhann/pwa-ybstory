@@ -9,7 +9,7 @@ export default {
     component: Generation
   }],
 
-  async loaded (ctx) {
-    ctx.gendao = new GenDAO(this.ctx)
+  async onload (ctx) {
+    ctx.gendao = new GenDAO(ctx)
   }
 }
