@@ -1,14 +1,13 @@
 import AsyncBoot from 'async-boot'
 import config from './config'
-
 import 'vant/lib/vant-css/base.css'
-
 import RouterView from './view'
 
 import dao from './packages/dao'
 import generation from './packages/generation'
 import modify from './packages/modify'
 import search from './packages/search'
+import cordova from './packages/cordova'
 
 const boot = new AsyncBoot({
   vue: {
@@ -17,11 +16,11 @@ const boot = new AsyncBoot({
   },
   servers: config.servers,
   packages: [
-    dao, generation, modify, search
+    dao, generation, modify, search, cordova
   ],
   started: async (ctx, next) => {
     if (!location.href.match('generation')) {
-      ctx._router.replace('/generation')
+      ctx._router.replace('/search')
     }
     await next()
   }
