@@ -14,7 +14,7 @@
       :finished="finished"
       @load="loadMore"
     >
-      <div v-for="story in results" :key="story._id">
+      <div v-for="story in results" :key="story._id" @click="openStory(story)">
         {{story.title}}
       </div>
     </van-list>
@@ -44,7 +44,6 @@ export default {
     }
   },
   created () {
-  	debugger
   },
   methods: {
     async onSearch () {
@@ -57,11 +56,14 @@ export default {
         const list = await this.ctx.searchDao.search(this.value, this.skip, this.limit)
         this.loading = false
         this.skip += this.limit
-        this.results = list
+        this.results = [...this.results, ...list]
         if (list.length === 0) {
           this.finished = true
         }
       }
+    },
+    openStory (story) {
+      this.$router.replace('/generation?story=' + story._id + '&query=' + this.value + '&skip=' + this.skip + '&limit=' + this.limit)
     }
   }
 }
@@ -69,6 +71,10 @@ export default {
 
 <style lang="less">
 .search {
-
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 </style>

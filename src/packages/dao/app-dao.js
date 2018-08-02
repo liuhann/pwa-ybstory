@@ -3,18 +3,17 @@ class AppDao {
   constructor (ctx) {
     this.ctx = ctx
   }
-  
   async getStoryById (id) {
     const result = await this.ctx.client.get(`/story/detail/` + id)
     return result.data
   }
-  
+
   async removeStoryById (id) {
     const result = await this.ctx.client.get(`/story/delete/` + id)
   }
-  
+
   async updateStory (story) {
-    await this.ctx.client.post('/story/detail/update',  story)
+    await this.ctx.client.post('/story/detail/update', story)
   }
 
   async listHome () {

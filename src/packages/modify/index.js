@@ -8,6 +8,6 @@ export default {
     component: StoryModify
   }],
 
-  async loaded (ctx) {
+  async onload (ctx) {
   }
 }

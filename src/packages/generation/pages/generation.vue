@@ -4,13 +4,14 @@
             <van-tab v-for="category in mainCategories" :title="category" :key="category">
             </van-tab>
         </van-tabs>-->
+        <div v-if="queryTitle" class="query-title" @click="refreshToHome">{{queryTitle}}</div>
         <div class="root-icons">
             <van-icon name="search" @click="goSearch"></van-icon>
-            <!--<van-icon name="like-o" @click="likeCurrentStory"><span>{{likeCount}}</span></van-icon>-->
-            <van-icon name="info-o"><span>{{listenCount}}</span></van-icon>
+            <van-icon v-if="swippedStory" :name="likeIconName" @click="likeCurrentStory"><span>{{swippedStory.like}}</span></van-icon>
+            <van-icon v-if="swippedStory" name="info-o"><span>{{listenCount}}</span></van-icon>
             <!--<van-icon name="edit" @click="editCurrentStory"></van-icon>-->
         </div>
-        <swipped-stories :filter="filter" @choose-story="chooseStory" @swipped-to="swippedToStory"></swipped-stories>
+        <swipped-stories :play-story="playStory" :filter="filter" @choose-story="chooseStory" @swipped-to="swippedToStory"></swipped-stories>
         <story-player :story="story"></story-player>
     </div>
 </template>
@@ -35,8 +36,7 @@ export default {
   },
   data () {
     return {
-      searchTitle: null,
-      storyId: null,
+      playStory: null,
       mainCategories: ['首页', '睡前故事', '绘本'],
       story: null,
       active: '首页',
@@ -51,21 +51,29 @@ export default {
   },
 
   computed: {
+    queryTitle () {
+      return this.$route.query.query
+    },
     filter () {
       const filter = {}
-      if (this.active !== '首页') {
-        filter.type = this.active
-      }
-      if (this.searchTitle) {
-        filter.title = this.searchTitle
+      if (this.$route.query.query) {
+        filter.title = this.$route.query.query
       }
       return filter
     },
     likeCount () {
+      debugger
       if (this.swippedStory && this.swippedStory.like) {
         return this.swippedStory.like
       } else {
         return ''
+      }
+    },
+    likeIconName () {
+      if (this.swippedStory.liked) {
+        return 'like'
+      } else {
+        return 'like-o'
       }
     },
     listenCount () {
@@ -83,22 +91,46 @@ export default {
 
   methods: {
     loadQueryFromRoute () {
-      this.searchTitle = this.$route.query.title
-      this.storyId = this.$route.query.id
+      if (this.$route.query.story) {
+        this.loadOneStory(this.$route.query.story)
+      } else {
+        this.playStory = null
+      }
     },
+
+    refreshToHome () {
+      this.$router.replace('/generation')
+    },
+
+    async loadOneStory (storyId) {
+      const result = await this.ctx.appDao.getStoryById(storyId)
+      this.playStory = result
+    },
+
     chooseStory (story) {
       this.story = story
       this.ctx.gendao.markStory(this.story, 'listened')
     },
+
     swippedToStory (story) {
       this.swippedStory = story
     },
+
     editCurrentStory () {
       this.$router.push('/system/modify/' + this.swippedStory._id)
     },
+
     likeCurrentStory () {
       if (this.swippedStory) {
-        this.ctx.gendao.markStory(this.story, 'like')
+        if (!this.swippedToStory.liked) {
+          if (this.swippedStory.like) {
+            this.swippedStory.like++
+          } else {
+            this.swippedStory.like = 1
+          }
+          this.$set(this.swippedStory, 'liked', true)
+          this.ctx.gendao.markStory(this.swippedStory, 'like')
+        }
       }
     },
     goSearch () {
@@ -115,6 +147,16 @@ export default {
     top: 0;
     width: 100vw;
     height: 100vh;
+    .query-title {
+        color: #fff;
+        position: absolute;
+        left: 12vw;
+        z-index: 101;
+        width: 60vw;
+        top: 2vw;
+        font-size: 4.2vw;
+        line-height: 9vw;
+    }
     .root-tabs {
         position: absolute;
         left: 12vw;
@@ -146,7 +188,7 @@ export default {
     .van-icon-info-o {
         top: 55%;
     }
-    .van-icon-like-o {
+    .van-icon-like-o, .van-icon-like {
         top: 45%;
     }
     .van-icon-edit {

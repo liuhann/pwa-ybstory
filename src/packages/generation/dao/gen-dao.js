@@ -2,7 +2,9 @@ export default class GenDAO {
   constructor (ctx) {
     this.ctx = ctx
   }
+  async getStoryDetail () {
 
+  }
   async someMoreStories () {
     const result = await this.ctx.client.get('/story/samples')
     return result.data
@@ -14,7 +16,7 @@ export default class GenDAO {
   }
 
   async markStory (story, mark) {
-    const result = await this.ctx.client.get('/story/view/' + story._id + '/' + mark)
+    const result = await this.ctx.client.put('/story/mark/' + story._id + '/' + mark)
     return result.data
   }
 }

@@ -32,6 +32,9 @@ export default {
   props: {
     filter: {
       type: Object
+    },
+    playStory: {
+      type: Object
     }
   },
   data () {
@@ -40,7 +43,9 @@ export default {
         direction: 'vertical'
       },
       stories: [],
-      currentIndex: 0
+      currentIndex: 0,
+      skip: 0,
+      limit: 20
     }
   },
   computed: {
@@ -57,6 +62,21 @@ export default {
   async created () {
     this.fetchMore()
   },
+  watch: {
+    playStory () {
+      if (this.playStory) {
+        this.stories.unshift(this.playStory)
+        this.chooseStory(this.playStory)
+      }
+    },
+    filter () {
+      this.stories = []
+      this.currentIndex = 1
+      this.skip = 0
+      this.fetchMore()
+    }
+  },
+
   methods: {
     getStoryCover (cover) {
       return `${this.imageHost}/story/cover/480/480/${cover}.png`
@@ -72,11 +92,17 @@ export default {
       this.$emit('swipped-to', this.stories[this.currentIndex])
     },
     async fetchMore () {
-      let more = await this.ctx.gendao.someMoreStories()
-      if (this.stories.length === 0) {
-        this.$emit('swipped-to', more[0])
+      if (this.filter.title) {
+        const list = await this.ctx.searchDao.search(this.filter.title, this.skip, this.limit)
+        this.stories = [...this.stories, ...list]
+        this.skip += this.limit
+      } else {
+        let more = await this.ctx.gendao.someMoreStories()
+        if (this.stories.length === 0) {
+          this.$emit('swipped-to', more[0])
+        }
+        this.stories = [...this.stories, ...more]
       }
-      this.stories = [...this.stories, ...more]
     },
     chooseStory (story) {
       this.$emit('choose-story', story)

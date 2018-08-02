@@ -3,10 +3,12 @@ export default class SearchDAO {
     this.ctx = ctx
   }
   async search (query, skip = 0, limit = 20) {
-    const result = await this.ctx.client.get('/story/search', {
-      query,
-      skip,
-      limit
+    const result = await this.ctx.client.get('/story/search',  {
+      params: {
+        query,
+        skip,
+        limit
+      }
     })
     return result.data
   }

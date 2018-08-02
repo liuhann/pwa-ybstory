@@ -20,7 +20,9 @@ const boot = new AsyncBoot({
     dao, generation, modify, search
   ],
   started: async (ctx, next) => {
-    ctx._router.replace('/generation')
+    if (!location.href.match('generation')) {
+      ctx._router.replace('/generation')
+    }
     await next()
   }
 })
