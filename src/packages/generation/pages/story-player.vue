@@ -33,6 +33,7 @@ import 'vant/lib/vant-css/badge.css'
 import 'vant/lib/vant-css/slider.css'
 import 'vant/lib/vant-css/loading.css'
 import storyMixins from './story-mixins'
+import coverMixins from '../../utils/cover-mixin'
 export default {
   name: 'story-player',
   components: {
@@ -41,7 +42,7 @@ export default {
     'van-icon': Icon
   },
   mixins: [
-    storyMixins
+    storyMixins, coverMixins
   ],
   props: {
     story: {
@@ -57,9 +58,6 @@ export default {
     }
   },
   computed: {
-    imageHost () {
-      return this.ctx.bootOpts.servers.default.baseURL
-    },
     storyUrl () {
       if (this.story) {
         return this.ctx.bootOpts.servers.file.baseURL + '/story/mp3/' + this.story._id
@@ -67,9 +65,8 @@ export default {
         return null
       }
     },
-
     cover () {
-      return this.getStoryCover(this.story.cover)
+      return this.getStoryCover(this.story)
     }
   },
 
@@ -87,13 +84,6 @@ export default {
   },
 
   methods: {
-    getStoryUrl (storyId) {
-
-    },
-    getStoryCover (cover) {
-      return `${this.imageHost}/story/cover/480/480/${cover}.png`
-    },
-
     onChange (value) {
       this.audio.currentTime = Math.floor(this.story.duration * value / 100)
     },

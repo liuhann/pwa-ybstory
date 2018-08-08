@@ -12,7 +12,7 @@
     <div class="result-list">
         <div class="item" v-for="story in results" :key="story._id" @click="openStory(story)">
           <div class="background" :style="{
-            backgroundImage: getStoryCoverBg(story.cover)
+            backgroundImage: getStoryCoverBg(story)
           }"></div>
           <div class="story-title">
             {{story.title}}
@@ -30,6 +30,7 @@ import Field from 'vant/lib/field'
 import Button from 'vant/lib/button'
 import 'vant/lib/vant-css/field.css'
 import 'vant/lib/vant-css/button.css'
+import coverMixins from '../utils/cover-mixin'
 
 export default {
   name: 'story-search',
@@ -37,6 +38,7 @@ export default {
     'van-field': Field,
     'van-button': Button
   },
+  mixins: [coverMixins],
   data () {
     return {
       skip: 0,
@@ -47,27 +49,9 @@ export default {
       finished: false
     }
   },
-  computed: {
-	  imageHost () {
-		  return this.ctx.bootOpts.servers.default.baseURL
-	  },
-	  imageStyle () {
-		  return {
-			  width: window.clientWidth - 20,
-			  height: window.clientWidth - 20
-		  }
-	  }
-  },
   created () {
   },
   methods: {
-	  getStoryCover (cover) {
-		  return `${this.imageHost}/story/cover/480/480/${cover}.png`
-	  },
-	  getStoryCoverBg (cover) {
-		  return "url('" + this.getStoryCover(cover) + "')"
-	  },
-
     async onSearch () {
       this.skip = 0
       this.results = []

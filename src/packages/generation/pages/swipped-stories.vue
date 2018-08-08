@@ -2,7 +2,7 @@
 <div class="horizontal-swipper">
     <swiper class="swiper" :options="swiperOption" ref="swiper" @slideChange="slideChange($event)">
         <swiper-slide class="slide" v-for="(story, index) in stories" :key="index">
-          <img @click="chooseStory(story)" class="cover" v-if="story.cover" :src="getStoryCover(story.cover)" :style="imageStyle">
+          <img @click="chooseStory(story)" class="cover" :src="getStoryCover(story)" :style="imageStyle">
           <div class="story-intro">
               <div class="title">
                   {{story.title}}
@@ -13,7 +13,7 @@
           </div>
           <div class="bg-mask"></div>
           <div class="background" :style="{
-            backgroundImage: getStoryCoverBg(story.cover)
+            backgroundImage: getStoryCoverBg(story)
           }"></div>
         </swiper-slide>
     </swiper>
@@ -23,12 +23,15 @@
 <script>
 import {swiper, swiperSlide} from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+
+import coverMixins from '../../utils/cover-mixin'
 export default {
   name: 'swipped-stories',
   components: {
     swiper,
     swiperSlide
   },
+  mixins: [coverMixins],
   props: {
     filter: {
       type: Object
@@ -49,9 +52,6 @@ export default {
     }
   },
   computed: {
-    imageHost () {
-      return this.ctx.bootOpts.servers.default.baseURL
-    },
     imageStyle () {
       return {
         width: window.clientWidth - 20,
@@ -78,12 +78,6 @@ export default {
   },
 
   methods: {
-    getStoryCover (cover) {
-      return `${this.imageHost}/story/cover/480/480/${cover}.png`
-    },
-    getStoryCoverBg (cover) {
-      return "url('" + this.getStoryCover(cover) + "')"
-    },
     slideChange (index) {
       this.currentIndex = this.$refs.swiper.swiper.activeIndex
       if (this.currentIndex + 10 > this.stories.length) {
