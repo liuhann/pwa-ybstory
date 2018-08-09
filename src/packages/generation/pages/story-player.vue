@@ -11,8 +11,8 @@
             </div>
             <div class="control" @click="togglePlay">
                 <van-loading v-if="loading"></van-loading>
-                <van-icon name="pause" v-if="playing && !loading"></van-icon>
-                <van-icon name="play" v-if="!playing && !loading"></van-icon>
+                <van-icon class="animated faster" name="pause" v-if="playing && !loading"></van-icon>
+                <van-icon class="animated faster" name="play" v-if="!playing && !loading"></van-icon>
             </div>
         </div>
         </transition>
@@ -34,6 +34,8 @@ import 'vant/lib/vant-css/slider.css'
 import 'vant/lib/vant-css/loading.css'
 import storyMixins from './story-mixins'
 import coverMixins from '../../utils/cover-mixin'
+import addClickEffect from '../../utils/click-effect'
+
 export default {
   name: 'story-player',
   components: {
@@ -88,7 +90,8 @@ export default {
       this.audio.currentTime = Math.floor(this.story.duration * value / 100)
     },
 
-    togglePlay () {
+    togglePlay (event) {
+      addClickEffect(event.currentTarget, 'pulse')
       this.playing = !this.playing
       if (this.playing) {
         this.audio.play()

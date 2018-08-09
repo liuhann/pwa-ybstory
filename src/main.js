@@ -1,6 +1,7 @@
 import AsyncBoot from 'async-boot'
 import config from './config'
 import 'vant/lib/vant-css/base.css'
+import './packages/styles/animation.less'
 import RouterView from './view'
 
 import dao from './packages/dao'

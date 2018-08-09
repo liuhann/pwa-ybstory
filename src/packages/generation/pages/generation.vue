@@ -7,7 +7,7 @@
         <div v-if="queryTitle" class="query-title" @click="refreshToHome">{{queryTitle}}</div>
         <div class="root-icons">
             <van-icon name="search" @click="goSearch"></van-icon>
-            <van-icon v-if="swippedStory" :name="likeIconName" @click="likeCurrentStory"><span>{{swippedStory.like}}</span></van-icon>
+            <van-icon class="animated faster" v-if="swippedStory" :name="likeIconName" @click="likeCurrentStory($event)"><span>{{swippedStory.like}}</span></van-icon>
             <van-icon v-if="swippedStory" name="info-o"><span>{{listenCount}}</span></van-icon>
             <!--<van-icon name="edit" @click="editCurrentStory"></van-icon>-->
         </div>
@@ -24,6 +24,7 @@ import StoryPlayer from './story-player'
 import Icon from 'vant/lib/icon'
 import 'vant/lib/vant-css/icon.css'
 import 'vant/lib/vant-css/tab.css'
+import addClickEffect from '../../utils/click-effect'
 
 export default {
   name: 'generation',
@@ -104,6 +105,7 @@ export default {
 
     async loadOneStory (storyId) {
       const result = await this.ctx.appDao.getStoryById(storyId)
+      this.swippedStory = result
       this.playStory = result
     },
 
@@ -120,7 +122,8 @@ export default {
       this.$router.push('/system/modify/' + this.swippedStory._id)
     },
 
-    likeCurrentStory () {
+    likeCurrentStory (event) {
+      addClickEffect(event.currentTarget, 'pulse')
       if (this.swippedStory) {
         if (!this.swippedToStory.liked) {
           if (this.swippedStory.like) {
@@ -142,7 +145,7 @@ export default {
 
 <style lang="less">
 .root {
-    position: relative;
+    position: absolute;
     left: 0;
     top: 0;
     width: 100vw;

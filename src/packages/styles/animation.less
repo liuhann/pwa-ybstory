@@ -1,0 +1,61 @@
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+.animated.fast {
+  -webkit-animation-duration: 800ms;
+  animation-duration: 800ms;
+}
+.animated.faster {
+  -webkit-animation-duration: .5s;
+  animation-duration: .5s;
+}
+
+.animated.slow {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+}
+
+
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  40% {
+    -webkit-transform: scale3d(1.5, 1.5, 1.5);
+    transform: scale3d(1.5, 1.5, 1.5);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+
+.pulse {
+  -webkit-animation-name: pulse;
+  .van-icon {
+    -webkit-animation-name: pulse;
+  }
+}
+
+
+.pause-enter-active, .pause-leave-active {
+  transition: opacity .5s;
+}
+.pause-enter, .pause-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  -webkit-transform: scale3d(1.5, 1.5, 1.5);
+}
+
+
