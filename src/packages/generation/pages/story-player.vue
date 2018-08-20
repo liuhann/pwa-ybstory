@@ -17,7 +17,7 @@
         </div>
         </transition>
         <div class='media-player'>
-            <audio id='media-video' controls="false" :src="storyUrl">
+            <audio id='media-video' controls="false" preload="none" :src="storyUrl">
             </audio>
         </div>
     </div>
