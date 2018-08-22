@@ -9,6 +9,10 @@ export default {
 
       let clicked = 0
       function onBackKeyDown () {
+        if (location.href.indexOf('/generation') > -1) {
+          history.back()
+          return
+        }
         const now = new Date().getTime()
         if (now - clicked > 800) {
           Toast('连续按两次返回键退出元宝故事')

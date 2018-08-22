@@ -19,4 +19,17 @@ export default class GenDAO {
     const result = await this.ctx.client.put('/story/mark/' + story._id + '/' + mark)
     return result.data
   }
+
+  async getRecommends () {
+    const result = await this.ctx.client.get('/story/recommends')
+    return result.data
+  }
+  async getLabels () {
+    const result = await this.ctx.client.get('/story/labels')
+    return result.data
+  }
+  async getCategories () {
+    const result = await this.ctx.client.get('/story/categories')
+    return result.data
+  }
 }

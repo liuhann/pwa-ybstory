@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.4.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.13f218f71c42fb781ffed1533f0854cd.js"
+  "precache-manifest.fa271165917677f102737443afbbea0b.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "pwa-ybstory"});
