@@ -9,7 +9,7 @@ export default {
 
       let clicked = 0
       function onBackKeyDown () {
-        if (location.href.indexOf('/generation') > -1) {
+        if (location.href.indexOf('/generation') === -1) {
           history.back()
           return
         }
