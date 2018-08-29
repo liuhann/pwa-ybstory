@@ -6,8 +6,20 @@
         center
         clearable
         placeholder="请输入想听的内容">
+        <van-icon slot="label" name="arrow-left"></van-icon>
         <van-button slot="button" size="small" type="primary" @click="onSearch">搜索</van-button>
       </van-field>
+    </div>
+    <div class="search-histories">
+      <div >搜索历史</div>
+      <div class="list">
+        <div v-if="histories.length===0">无搜索历史</div>
+        <div v-else>
+          <div v-for="history in histories" :key="history" @click="searchHistory">
+            {{history}}
+          </div>
+        </div>
+      </div>
     </div>
     <div class="result-list">
         <div class="item" v-for="story in results" :key="story._id" @click="openStory(story)">
@@ -26,21 +38,25 @@
 </template>
 
 <script>
+import Icon from 'vant/lib/icon'
 import Field from 'vant/lib/field'
 import Button from 'vant/lib/button'
 import 'vant/lib/vant-css/field.css'
 import 'vant/lib/vant-css/button.css'
+import 'vant/lib/vant-css/icon.css'
 import coverMixins from '../utils/cover-mixin'
 
 export default {
   name: 'story-search',
   components: {
     'van-field': Field,
-    'van-button': Button
+    'van-button': Button,
+    'van-icon': Icon
   },
   mixins: [coverMixins],
   data () {
     return {
+      histories: [],
       skip: 0,
       limit: 50,
       value: '',
@@ -50,6 +66,7 @@ export default {
     }
   },
   created () {
+    this.histories = this.getSearchHistory()
   },
   methods: {
     async onSearch () {
@@ -60,6 +77,7 @@ export default {
     async loadMore () {
       if (this.value) {
         this.loading = true
+        this.addSearchHistory(this.value)
         const list = await this.ctx.searchDao.search(this.value, this.skip, this.limit)
         this.loading = false
         this.skip += this.limit
@@ -71,6 +89,33 @@ export default {
     },
     openStory (story) {
       this.$router.replace('/generation?story=' + story._id + '&query=' + this.value + '&skip=' + this.skip + '&limit=' + this.limit)
+    },
+
+    searchHistory (history) {
+      this.value = history
+      this.loadMore()
+    },
+
+    getSearchHistory () {
+      var ybHistory = localStorage.getItem('yb-history')
+      let histories = []
+      if (ybHistory) {
+        histories = JSON.parse(ybHistory)
+      }
+      return histories
+    },
+
+    addSearchHistory (qu) {
+      var ybHistory = localStorage.getItem('yb-history')
+      let histories = []
+      if (ybHistory) {
+        histories = JSON.parse(ybHistory)
+      }
+      histories.unshift(qu)
+      if (histories.length > 10) {
+        histories.length = 10
+      }
+      localStorage.setItem('yb-history', JSON.stringify(histories))
     }
   }
 }
@@ -78,20 +123,26 @@ export default {
 
 <style lang="less">
 .story-search {
-  position: relative;
+  position: absolute;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
-  background: transparent;
+  overflow: hidden;
+  background: #f8f8f8;
   .van-cell {
-    margin: 10px;
-    width: auto;
+    .van-cell__title {
+      max-width: 36px;
+    }
   }
   .search-input {
   }
   .van-search {
     height: 56px;
+  }
+
+  .search-histories {
+    padding: 10px;
   }
 
   .result-list {

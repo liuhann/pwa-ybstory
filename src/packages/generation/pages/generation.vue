@@ -150,6 +150,7 @@ export default {
     top: 0;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
     .query-title {
         color: #fff;
         position: absolute;
