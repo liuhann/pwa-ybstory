@@ -6,26 +6,32 @@
         center
         clearable
         placeholder="请输入想听的内容">
-        <van-icon slot="label" name="arrow-left"></van-icon>
+        <van-icon slot="label" name="arrow-left" @click="navBack"></van-icon>
         <van-button slot="button" size="small" type="primary" @click="onSearch">搜索</van-button>
       </van-field>
     </div>
-    <div class="search-histories">
-      <div >搜索历史</div>
+    <div class="search-histories" v-if="!searched">
+      <div class="title">
+        <div class="name">搜索历史</div>
+        <div class="clear" @click="clearHistory()">清除搜索历史</div>
+      </div>
       <div class="list">
-        <div v-if="histories.length===0">无搜索历史</div>
+        <div v-if="histories.length===0" class="no-history">无搜索历史</div>
         <div v-else>
-          <div v-for="history in histories" :key="history" @click="searchHistory">
+          <div class="history" v-for="history in histories" :key="history" @click="searchHistory(history)">
             {{history}}
           </div>
         </div>
       </div>
     </div>
-    <div class="result-list">
+    <div class="result-list" v-if="searched">
+      <div v-if="results.length===0" class="empty">
+        没有找到相关的故事
+      </div>
         <div class="item" v-for="story in results" :key="story._id" @click="openStory(story)">
-          <div class="background" :style="{
-            backgroundImage: getStoryCoverBg(story)
-          }"></div>
+          <div class="cover">
+            <img :src="getStoryCover(story)">
+          </div>
           <div class="story-title">
             {{story.title}}
           </div>
@@ -62,7 +68,7 @@ export default {
       value: '',
       results: [],
       loading: false,
-      finished: false
+      searched: false
     }
   },
   created () {
@@ -79,13 +85,20 @@ export default {
         this.loading = true
         this.addSearchHistory(this.value)
         const list = await this.ctx.searchDao.search(this.value, this.skip, this.limit)
+        list.sort((a, b) => {
+          if (a.cover && !b.cover) {
+            return -1
+          }
+          return 1
+        })
+
         this.loading = false
-        this.skip += this.limit
-        this.results = [...this.results, ...list]
-        if (list.length === 0) {
-          this.finished = true
-        }
+        this.results = list
+        this.searched = true
       }
+    },
+    navBack () {
+      this.$router.go(-1)
     },
     openStory (story) {
       this.$router.replace('/generation?story=' + story._id + '&query=' + this.value + '&skip=' + this.skip + '&limit=' + this.limit)
@@ -102,7 +115,12 @@ export default {
       if (ybHistory) {
         histories = JSON.parse(ybHistory)
       }
-      return histories
+      return histories || []
+    },
+
+    clearHistory () {
+      localStorage.removeItem('yb-history')
+      this.histories = []
     },
 
     addSearchHistory (qu) {
@@ -111,9 +129,11 @@ export default {
       if (ybHistory) {
         histories = JSON.parse(ybHistory)
       }
-      histories.unshift(qu)
-      if (histories.length > 10) {
-        histories.length = 10
+      if (histories.indexOf(qu) === -1) {
+        histories.unshift(qu)
+        if (histories.length > 10) {
+          histories.length = 10
+        }
       }
       localStorage.setItem('yb-history', JSON.stringify(histories))
     }
@@ -128,7 +148,7 @@ export default {
   top: 0;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
   background: #f8f8f8;
   .van-cell {
     .van-cell__title {
@@ -143,33 +163,66 @@ export default {
 
   .search-histories {
     padding: 10px;
+    .title {
+      display: flex;
+      margin: 10px 0px;
+      .name {
+        flex: 1;
+        color: #666;
+      }
+      .clear {
+        color: #44bb00;
+      }
+    }
+
+    .list {
+      .history {
+        float: left;
+        padding: 10px;
+        margin-right: 20px;
+        background: #fff;
+        color: #999;
+      }
+    }
   }
 
   .result-list {
     .item {
-      float: left;
-      width: 50vw;
-      height: 50vw;
+      height: 60px;
+      background: #fff;
+      border-bottom: 1px solid #f1f1f1;
       box-sizing: border-box;
       position: relative;
-      .background {
-        width: 100%;
-        height: 100%;
-        background-size: contain;
+      .cover {
+        position: absolute;
+        left: 10px;
+        top:5px;
+        img {
+          width: 50px;
+          height: 50px;
+        }
       }
       .story-title {
         position: absolute;
-        height: 20px;
-        background: rgb(65, 126, 196);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         font-size: 14px;
-        padding: 5px 10px;
-        color: #efefef;
-        left: 4px;
-        right: 4px;
-        bottom: 4px;
+        color: #666;
+        top: 20px;
+        left: 70px;
+        right: 10px;
+        height: 28px;
+      }
+      .short {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px;
+        color: #999;
+        top: 30px;
+        left: 70px;
+        right: 10px;
       }
     }
   }
