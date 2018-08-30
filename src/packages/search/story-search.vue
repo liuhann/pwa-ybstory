@@ -1,6 +1,7 @@
 <template>
   <div class="story-search">
-    <div class="search-input">
+    <div class="search-input
+">
       <van-field
         v-model="value"
         center
@@ -36,7 +37,7 @@
             {{story.title}}
           </div>
           <div class="short">
-            {{story.dura}}
+            {{story.short}}
           </div>
         </div>
     </div>
@@ -156,6 +157,7 @@ export default {
     }
   }
   .search-input {
+    border-bottom: 1px solid #f1f1f1;
   }
   .van-search {
     height: 56px;
@@ -178,8 +180,8 @@ export default {
     .list {
       .history {
         float: left;
-        padding: 10px;
-        margin-right: 20px;
+        padding: 6px 10px;
+        margin-right: 16px;
         background: #fff;
         color: #999;
       }
@@ -188,7 +190,7 @@ export default {
 
   .result-list {
     .item {
-      height: 60px;
+      height: 65px;
       background: #fff;
       border-bottom: 1px solid #f1f1f1;
       box-sizing: border-box;
@@ -198,8 +200,8 @@ export default {
         left: 10px;
         top:5px;
         img {
-          width: 50px;
-          height: 50px;
+          width: 55px;
+          height: 55px;
         }
       }
       .story-title {
@@ -209,19 +211,20 @@ export default {
         white-space: nowrap;
         font-size: 14px;
         color: #666;
-        top: 20px;
-        left: 70px;
+        top: 12px;
+        left: 76px;
         right: 10px;
         height: 28px;
       }
       .short {
+        position: absolute;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         font-size: 12px;
         color: #999;
-        top: 30px;
-        left: 70px;
+        top: 37px;
+        left: 76px;
         right: 10px;
       }
     }

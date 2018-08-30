@@ -1,15 +1,24 @@
 <template>
     <div class="root">
-        <!--<van-tabs v-model="active" class="root-tabs">
+        <!--
+        <van-tabs v-model="active" class="root-tabs">
             <van-tab v-for="category in mainCategories" :title="category" :key="category">
             </van-tab>
-        </van-tabs>-->
-        <div v-if="queryTitle" class="query-title" @click="refreshToHome">{{queryTitle}}</div>
+        </van-tabs>
+        -->
+        <div v-if="queryTitle" class="query-title">
+            <div class="content">
+                <div class="text">查找：{{queryTitle}}</div>
+                <van-icon name="close" @click="refreshToHome"/>
+            </div>
+        </div>
         <div class="root-icons">
             <van-icon name="search" @click="goSearch"></van-icon>
             <van-icon class="animated faster" v-if="swippedStory" :name="likeIconName" @click="likeCurrentStory($event)"><span>{{swippedStory.like}}</span></van-icon>
             <van-icon v-if="swippedStory" name="info-o"><span>{{listenCount}}</span></van-icon>
-            <!--<van-icon name="edit" @click="editCurrentStory"></van-icon>-->
+            <!--
+                <van-icon name="edit" @click="editCurrentStory"></van-icon>
+            -->
         </div>
         <swipped-stories :play-story="playStory" :filter="filter" @choose-story="chooseStory" @swipped-to="swippedToStory"></swipped-stories>
         <story-player :story="story"></story-player>
@@ -63,7 +72,6 @@ export default {
       return filter
     },
     likeCount () {
-      debugger
       if (this.swippedStory && this.swippedStory.like) {
         return this.swippedStory.like
       } else {
@@ -152,14 +160,34 @@ export default {
     height: 100vh;
     overflow: hidden;
     .query-title {
-        color: #fff;
         position: absolute;
-        left: 12vw;
+        left: 15%;
+        right: 15%;
+        top: 0;
+        color: #fff;
         z-index: 101;
-        width: 60vw;
-        top: 2vw;
-        font-size: 4.2vw;
-        line-height: 9vw;
+        padding: 3vw 0;
+        font-size: 16px;
+        text-align: center;
+        .content {
+            padding: 0px 16px;
+            line-height: 36px;
+            background-color: rgba(0,0,0,.5);
+            display: inline-block;
+            border-radius: 10px;
+            .text {
+                white-space: nowrap;
+                overflow: hidden;
+                max-width: 50vw;
+                text-overflow:ellipsis;
+                display: inline-block;
+                vertical-align: top;
+                margin-right: 16px;
+            }
+            .van-icon {
+                line-height: 38px;
+            }
+        }
     }
     .root-tabs {
         position: absolute;
