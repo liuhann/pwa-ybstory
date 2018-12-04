@@ -31,8 +31,8 @@ import Tab from 'vant/lib/tab'
 import Tabs from 'vant/lib/tabs'
 import StoryPlayer from './story-player'
 import Icon from 'vant/lib/icon'
-import 'vant/lib/vant-css/icon.css'
-import 'vant/lib/vant-css/tab.css'
+import 'vant/lib/icon/style'
+import 'vant/lib/tab/style'
 import addClickEffect from '../../utils/click-effect'
 
 export default {

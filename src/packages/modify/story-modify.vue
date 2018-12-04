@@ -27,10 +27,10 @@ import Field from 'vant/lib/field'
 import CellGroup from 'vant/lib/cell-group'
 import NavBar from 'vant/lib/nav-bar'
 import Button from 'vant/lib/button'
-import 'vant/lib/vant-css/button.css'
-import 'vant/lib/vant-css/field.css'
-import 'vant/lib/vant-css/cell.css'
-import 'vant/lib/vant-css/nav-bar.css'
+import 'vant/lib/button/style'
+import 'vant/lib/field/style'
+import 'vant/lib/cell-group/style'
+import 'vant/lib/nav-bar/style'
 
 export default {
   name: 'story-modify',

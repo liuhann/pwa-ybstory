@@ -1,5 +1,5 @@
 import Toast from 'vant/lib/toast'
-import 'vant/lib/vant-css/toast.css'
+import 'vant/lib/toast/style'
 
 export default {
   onload (ctx, next) {

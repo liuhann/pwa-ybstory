@@ -48,9 +48,9 @@
 import Icon from 'vant/lib/icon'
 import Field from 'vant/lib/field'
 import Button from 'vant/lib/button'
-import 'vant/lib/vant-css/field.css'
-import 'vant/lib/vant-css/button.css'
-import 'vant/lib/vant-css/icon.css'
+import 'vant/lib/icon/style'
+import 'vant/lib/button/style'
+import 'vant/lib/field/style'
 import coverMixins from '../utils/cover-mixin'
 
 export default {
